@@ -1,0 +1,103 @@
+package com.xellitix.commons.jackson.deserialization;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.inject.Singleton;
+
+/**
+ * Default {@link JsonNodePropertyRetriever} implementation.
+ *
+ * @author Grayson Kuhns
+ */
+@Singleton
+public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriever {
+
+  // Messages
+  private static final String MSG_TMPL_PROP_MISSING =
+      "Expected property \"%s\" to be defined";
+
+  private static final String MSG_TMPL_STRING_INVALID =
+      "Expected property \"%s\" to be a string";
+  private static final String MSG_TMPL_INT_INVALID =
+      "Expected property \"%s\" to be an integer";
+
+  /**
+   * Retrieves the value of a {@link String} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link String} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public String getString(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getProperty(node, property, parser);
+
+    if (!prop.isTextual()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_STRING_INVALID, property));
+    }
+
+    return prop.asText();
+  }
+
+  /**
+   * Retrieves the value of an {@link Integer} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link Integer} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public int getInt(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getProperty(node, property, parser);
+
+    if (!prop.isInt()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_INT_INVALID, property));
+    }
+
+    return prop.asInt();
+  }
+
+  /**
+   * Gets a property {@link JsonNode}.
+   *
+   * @param node The root object {@link JsonNode}.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The property {@link JsonNode}.
+   * @throws JsonMappingException If the property is not defined.
+   */
+  @Override
+  public JsonNode getProperty(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = node.get(property);
+
+    if (prop == null) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_PROP_MISSING, property));
+
+    }
+
+    return prop;
+  }
+}

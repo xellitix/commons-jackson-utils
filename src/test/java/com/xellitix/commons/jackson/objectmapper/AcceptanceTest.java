@@ -2,6 +2,7 @@ package com.xellitix.commons.jackson.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
+import com.xellitix.commons.jackson.JacksonUtilsModule;
 import com.xellitix.commons.jackson.objectmapper.test.org.Organization;
 import com.xellitix.commons.jackson.objectmapper.test.org.OrganizationModule;
 import com.xellitix.commons.jackson.objectmapper.test.person.Person;
@@ -88,7 +89,7 @@ public class AcceptanceTest {
   public void setUp() {
     mapper = Guice
         .createInjector(
-            new ObjectMapperModule(),
+            new JacksonUtilsModule(),
             new PersonModule(),
             new OrganizationModule())
         .getInstance(ObjectMapper.class);
