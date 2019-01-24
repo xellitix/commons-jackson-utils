@@ -2,14 +2,10 @@ package com.xellitix.commons.jackson.deserialization;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.xellitix.commons.net.compat.java.uri.UriFactory;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,14 +20,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JsonNode.class)
-public class DefaultJsonNodePropertyRetrieverIntegerTest {
+public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNodePropertyRetrieverTest {
 
   // Constants
-  private static final String PROPERTY = "foo";
   private static final int VALUE = 42;
-
-  private static final String EX_MSG_PROP_NULL =
-      "Expected property \"foo\" to be defined";
   private static final String EX_MSG_PROP_INVALID =
       "Expected property \"foo\" to be an integer";
 
@@ -39,18 +31,19 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  // Fixtures
-  private JsonNode root;
-  private JsonNode prop;
-
-  private JsonParser parser;
-  private JsonNodePropertyRetriever propertyRetriever;
-
   @Test
   public void getIntReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asInt();
+    doReturn(true)
+        .when(prop)
+        .isInt();
+
+    // Attempt to get the property value
     assertThat(propertyRetriever
         .getInt(root, PROPERTY, parser))
-        .isNotNull()
         .isEqualTo(VALUE);
   }
 
@@ -82,28 +75,5 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest {
 
     // Attempt to get the property value
     propertyRetriever.getInt(root, PROPERTY, parser);
-  }
-
-  @Before
-  public void setUp() {
-    // Mock the intermediate representation
-    prop = mock(JsonNode.class);
-    doReturn(VALUE)
-        .when(prop)
-        .asInt();
-    doReturn(true)
-        .when(prop)
-        .isInt();
-
-    root = mock(JsonNode.class);
-    doReturn(prop)
-        .when(root)
-        .get(eq(PROPERTY));
-
-    // Mock the JsonParser
-    parser = mock(JsonParser.class);
-
-    // Create the test subject
-    propertyRetriever = new DefaultJsonNodePropertyRetriever(mock(UriFactory.class));
   }
 }

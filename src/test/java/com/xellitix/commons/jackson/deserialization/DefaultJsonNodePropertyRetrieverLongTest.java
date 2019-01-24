@@ -14,42 +14,41 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
- * {@link DefaultJsonNodePropertyRetriever} String value retrieval test case.
+ * {@link DefaultJsonNodePropertyRetriever} long value retrieval test case.
  *
  * @author Grayson Kuhns
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JsonNode.class)
-public class DefaultJsonNodePropertyRetrieverStringTest extends AbstractJsonNodePropertyRetrieverTest {
+public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePropertyRetrieverTest {
 
   // Constants
-  private static final String VALUE = "bar";
+  private static final long VALUE = 42l;
   private static final String EX_MSG_PROP_INVALID =
-      "Expected property \"foo\" to be a string";
+      "Expected property \"foo\" to be a long";
 
   // Rules
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void getStringReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+  public void getLongReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
     // Prepare the test
     doReturn(VALUE)
         .when(prop)
-        .asText();
+        .asLong();
     doReturn(true)
         .when(prop)
-        .isTextual();
+        .isLong();
 
     // Attempt to get the property value
     assertThat(propertyRetriever
-        .getString(root, PROPERTY, parser))
-        .isNotNull()
+        .getLong(root, PROPERTY, parser))
         .isEqualTo(VALUE);
   }
 
   @Test
-  public void getStringThrowsException__WhenPropertyDoesNotExist__Test() throws Exception {
+  public void getIntThrowsException__WhenPropertyDoesNotExist__Test() throws Exception {
     // Describe the exception to expect
     thrown.expect(JsonMappingException.class);
     thrown.expectMessage(EX_MSG_PROP_NULL);
@@ -60,11 +59,11 @@ public class DefaultJsonNodePropertyRetrieverStringTest extends AbstractJsonNode
         .get(eq(PROPERTY));
 
     // Attempt to get the property value
-    propertyRetriever.getString(root, PROPERTY, parser);
+    propertyRetriever.getLong(root, PROPERTY, parser);
   }
 
   @Test
-  public void getStringThrowsException__WhenPropertyIsNotString__Test() throws Exception {
+  public void getLongThrowsException__WhenPropertyIsNotString__Test() throws Exception {
     // Describe the exception to expect
     thrown.expect(JsonMappingException.class);
     thrown.expectMessage(EX_MSG_PROP_INVALID);
@@ -72,9 +71,9 @@ public class DefaultJsonNodePropertyRetrieverStringTest extends AbstractJsonNode
     // Prepare the test
     doReturn(false)
         .when(prop)
-        .isTextual();
+        .isLong();
 
     // Attempt to get the property value
-    propertyRetriever.getString(root, PROPERTY, parser);
+    propertyRetriever.getLong(root, PROPERTY, parser);
   }
 }
