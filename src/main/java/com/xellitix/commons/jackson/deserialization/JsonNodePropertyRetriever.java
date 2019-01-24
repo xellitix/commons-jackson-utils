@@ -34,6 +34,17 @@ public interface JsonNodePropertyRetriever {
   int getInt(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
 
   /**
+   * Retrieves the value of a {@link Long} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link Long} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  long getLong(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+
+  /**
    * Gets a property {@link JsonNode}.
    *
    * @param node The root object {@link JsonNode}.

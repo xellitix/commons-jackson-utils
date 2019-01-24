@@ -21,6 +21,8 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       "Expected property \"%s\" to be a string";
   private static final String MSG_TMPL_INT_INVALID =
       "Expected property \"%s\" to be an integer";
+  private static final String MSG_TMPL_LONG_INVALID =
+      "Expected property \"%s\" to be a long";
 
   /**
    * Retrieves the value of a {@link String} property.
@@ -72,6 +74,32 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
     }
 
     return prop.asInt();
+  }
+
+  /**
+   * Retrieves the value of a {@link Long} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link Long} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public long getLong(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getProperty(node, property, parser);
+
+    if (!prop.isLong()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_LONG_INVALID, property));
+    }
+
+    return prop.asLong();
   }
 
   /**
