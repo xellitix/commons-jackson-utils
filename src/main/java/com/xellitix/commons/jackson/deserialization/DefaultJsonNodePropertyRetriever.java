@@ -3,7 +3,11 @@ package com.xellitix.commons.jackson.deserialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.xellitix.commons.net.compat.java.uri.UriFactory;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Default {@link JsonNodePropertyRetriever} implementation.
@@ -23,6 +27,21 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       "Expected property \"%s\" to be an integer";
   private static final String MSG_TMPL_LONG_INVALID =
       "Expected property \"%s\" to be a long";
+  private static final String MSG_TMPL_URI_INVALID =
+      "Expected property \"%s\" to be a valid URI";
+
+  // Dependencies
+  private final UriFactory uriFactory;
+
+  /**
+   * Constructor.
+   *
+   * @param uriFactory The {@link UriFactory}.
+   */
+  @Inject
+  DefaultJsonNodePropertyRetriever(final UriFactory uriFactory) {
+    this.uriFactory = uriFactory;
+  }
 
   /**
    * Retrieves the value of a {@link String} property.
@@ -103,6 +122,41 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
   }
 
   /**
+   * Retrieves the value of a {@link URI} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URI} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public URI getUri(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getProperty(node, property, parser);
+
+    if (!prop.isTextual()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_URI_INVALID, property));
+    }
+
+    final String uri = prop.asText();
+
+    try {
+      return uriFactory.create(uri);
+    } catch (URISyntaxException ex) {
+      throw new JsonMappingException(
+          parser,
+          String.format(MSG_TMPL_URI_INVALID, property),
+          ex);
+    }
+  }
+
+  /**
    * Gets a property {@link JsonNode}.
    *
    * @param node The root object {@link JsonNode}.
@@ -123,7 +177,6 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
     if (prop == null) {
       throw new JsonMappingException(parser,
           String.format(MSG_TMPL_PROP_MISSING, property));
-
     }
 
     return prop;

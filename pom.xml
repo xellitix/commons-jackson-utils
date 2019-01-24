@@ -93,6 +93,12 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.xellitix.commons</groupId>
+            <artifactId>net</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+
         <!-- Test dependencies -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

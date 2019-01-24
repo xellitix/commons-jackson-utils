@@ -3,6 +3,7 @@ package com.xellitix.commons.jackson.deserialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URI;
 
 /**
  * {@link JsonNode} property retriever.
@@ -43,6 +44,17 @@ public interface JsonNodePropertyRetriever {
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
   long getLong(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+
+  /**
+   * Retrieves the value of a {@link URI} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URI} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  URI getUri(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
 
   /**
    * Gets a property {@link JsonNode}.
