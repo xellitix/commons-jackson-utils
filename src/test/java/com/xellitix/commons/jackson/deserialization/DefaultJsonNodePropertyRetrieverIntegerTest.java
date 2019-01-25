@@ -63,7 +63,7 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
   }
 
   @Test
-  public void getIntThrowsException__WhenPropertyIsNotString__Test() throws Exception {
+  public void getIntThrowsException__WhenPropertyIsNotInteger__Test() throws Exception {
     // Describe the exception to expect
     thrown.expect(JsonMappingException.class);
     thrown.expectMessage(EX_MSG_PROP_INVALID);

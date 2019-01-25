@@ -31,7 +31,7 @@ public class AbstractJsonNodePropertyRetrieverTest {
   protected JsonNodePropertyRetriever propertyRetriever;
 
   @Before
-  public void setUp() {
+  public void setUp() throws Exception {
     // Mock the intermediate representation
     prop = mock(JsonNode.class);
     root = mock(JsonNode.class);

@@ -63,7 +63,7 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
   }
 
   @Test
-  public void getLongThrowsException__WhenPropertyIsNotString__Test() throws Exception {
+  public void getLongThrowsException__WhenPropertyIsNotLong__Test() throws Exception {
     // Describe the exception to expect
     thrown.expect(JsonMappingException.class);
     thrown.expectMessage(EX_MSG_PROP_INVALID);
