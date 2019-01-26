@@ -31,6 +31,7 @@ public class DefaultJsonNodePropertyRetrieverStringTest extends AbstractJsonNode
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  // #getString
   @Test
   public void getStringReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
     // Prepare the test
@@ -76,5 +77,51 @@ public class DefaultJsonNodePropertyRetrieverStringTest extends AbstractJsonNode
 
     // Attempt to get the property value
     propertyRetriever.getString(root, PROPERTY, parser);
+  }
+
+  // #getStringOrNull
+  @Test
+  public void getStringOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asText();
+    doReturn(true)
+        .when(prop)
+        .isTextual();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getStringOrNull(root, PROPERTY, parser))
+        .isNotNull()
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getStringOrNullReturnsNull__WhenPropertyDoesNotExist__Test() throws Exception {
+    // Prepare the test
+    doReturn(null)
+        .when(root)
+        .get(eq(PROPERTY));
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getStringOrNull(root, PROPERTY, parser))
+        .isNull();
+  }
+
+  @Test
+  public void getStringOrNullThrowsException__WhenPropertyIsNotString__Test() throws Exception {
+    // Describe the exception to expect
+    thrown.expect(JsonMappingException.class);
+    thrown.expectMessage(EX_MSG_PROP_INVALID);
+
+    // Prepare the test
+    doReturn(false)
+        .when(prop)
+        .isTextual();
+
+    // Attempt to get the property value
+    propertyRetriever.getStringOrNull(root, PROPERTY, parser);
   }
 }
