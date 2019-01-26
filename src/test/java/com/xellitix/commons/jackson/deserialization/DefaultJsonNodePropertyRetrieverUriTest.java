@@ -38,6 +38,7 @@ public class DefaultJsonNodePropertyRetrieverUriTest extends AbstractJsonNodePro
   // Fixtures
   private URI uri;
 
+  // #getUri
   @Test
   public void getUriReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
     // Prepare the test
@@ -98,6 +99,67 @@ public class DefaultJsonNodePropertyRetrieverUriTest extends AbstractJsonNodePro
 
     // Attempt to get the property value
     propertyRetriever.getUri(root, PROPERTY, parser);
+  }
+
+  // #getUriOrNull
+  @Test
+  public void getUriOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asText();
+    doReturn(true)
+        .when(prop)
+        .isTextual();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getUriOrNull(root, PROPERTY, parser))
+        .isNotNull()
+        .isEqualTo(uri);
+  }
+
+  @Test
+  public void getUriOrNullReturnsNull__WhenPropertyDoesNotExist__Test() throws Exception {
+    // Prepare the test
+    doReturn(null)
+        .when(root)
+        .get(eq(PROPERTY));
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getUriOrNull(root, PROPERTY, parser))
+        .isNull();
+  }
+
+  @Test
+  public void getUriOrNullThrowsException__WhenPropertyIsNotUriString__Test() throws Exception {
+    // Describe the exception to expect
+    thrown.expect(JsonMappingException.class);
+    thrown.expectMessage(EX_MSG_PROP_INVALID);
+
+    // Prepare the test
+    doReturn(false)
+        .when(prop)
+        .isTextual();
+
+    // Attempt to get the property value
+    propertyRetriever.getUriOrNull(root, PROPERTY, parser);
+  }
+
+  @Test
+  public void getUriOrNullThrowsException__WhenPropertyIsNotValidUri__Test() throws Exception {
+    // Describe the exception to expect
+    thrown.expect(JsonMappingException.class);
+    thrown.expectMessage(EX_MSG_PROP_INVALID);
+
+    // Prepare the test
+    doThrow(new URISyntaxException(VALUE, "because"))
+        .when(uriFactory)
+        .create(eq(VALUE));
+
+    // Attempt to get the property value
+    propertyRetriever.getUriOrNull(root, PROPERTY, parser);
   }
 
   @Before
