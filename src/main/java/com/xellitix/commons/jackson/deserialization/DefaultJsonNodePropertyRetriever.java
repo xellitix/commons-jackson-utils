@@ -95,6 +95,36 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
   }
 
   /**
+   * Retrieves the value of an {@link Integer} property if it exists.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link Integer} value or null if the property does not exist.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public Integer getIntOrNull(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getPropertyOrNull(node, property);
+
+    if (prop == null) {
+      return null;
+    }
+
+    if (!prop.isInt()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_INT_INVALID, property));
+    }
+
+    return prop.asInt();
+  }
+
+  /**
    * Retrieves the value of an {@link Integer} property.
    *
    * @param node The {@link JsonNode} containing the property.
@@ -110,14 +140,9 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       final JsonParser parser)
       throws JsonMappingException {
 
-    final JsonNode prop = getProperty(node, property, parser);
-
-    if (!prop.isInt()) {
-      throw new JsonMappingException(parser,
-          String.format(MSG_TMPL_INT_INVALID, property));
-    }
-
-    return prop.asInt();
+    final Integer prop = getIntOrNull(node, property, parser);
+    throwIfNull(prop, property, parser);
+    return prop;
   }
 
   /**
