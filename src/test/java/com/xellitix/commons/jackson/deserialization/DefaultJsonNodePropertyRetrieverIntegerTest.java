@@ -31,6 +31,7 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  // #getInt
   @Test
   public void getIntReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
     // Prepare the test
@@ -75,5 +76,51 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
 
     // Attempt to get the property value
     propertyRetriever.getInt(root, PROPERTY, parser);
+  }
+
+  // #getIntOrNull
+  @Test
+  public void getIntOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asInt();
+    doReturn(true)
+        .when(prop)
+        .isInt();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getIntOrNull(root, PROPERTY, parser))
+        .isNotNull()
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getIntOrNullReturnsNull__WhenPropertyDoesNotExist__Test() throws Exception {
+    // Prepare the test
+    doReturn(null)
+        .when(root)
+        .get(eq(PROPERTY));
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getIntOrNull(root, PROPERTY, parser))
+        .isNull();
+  }
+
+  @Test
+  public void getIntOrNullThrowsException__WhenPropertyIsNotInteger__Test() throws Exception {
+    // Describe the exception to expect
+    thrown.expect(JsonMappingException.class);
+    thrown.expectMessage(EX_MSG_PROP_INVALID);
+
+    // Prepare the test
+    doReturn(false)
+        .when(prop)
+        .isInt();
+
+    // Attempt to get the property value
+    propertyRetriever.getIntOrNull(root, PROPERTY, parser);
   }
 }
