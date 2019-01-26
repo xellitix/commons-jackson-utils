@@ -197,22 +197,26 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
   }
 
   /**
-   * Retrieves the value of a {@link URI} property.
+   * Retrieves the value of a {@link URI} property if it exists.
    *
    * @param node The {@link JsonNode} containing the property.
    * @param property The property name.
    * @param parser The {@link JsonParser}.
-   * @return The {@link URI} value.
+   * @return The {@link URI} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
   @Override
-  public URI getUri(
+  public URI getUriOrNull(
       final JsonNode node,
       final String property,
       final JsonParser parser)
       throws JsonMappingException {
 
-    final JsonNode prop = getProperty(node, property, parser);
+    final JsonNode prop = getPropertyOrNull(node, property);
+
+    if (prop == null) {
+      return null;
+    }
 
     if (!prop.isTextual()) {
       throw new JsonMappingException(parser,
@@ -229,6 +233,27 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
           String.format(MSG_TMPL_URI_INVALID, property),
           ex);
     }
+  }
+
+  /**
+   * Retrieves the value of a {@link URI} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URI} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public URI getUri(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final URI prop = getUriOrNull(node, property, parser);
+    throwIfNull(prop, property, parser);
+    return prop;
   }
 
   /**
