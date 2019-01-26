@@ -146,6 +146,36 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
   }
 
   /**
+   * Retrieves the value of a {@link Long} property if it exists.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link Long} value or null if the property does not exist.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public Long getLongOrNull(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getPropertyOrNull(node, property);
+
+    if (prop == null) {
+      return null;
+    }
+
+    if (!prop.isLong()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_LONG_INVALID, property));
+    }
+
+    return prop.asLong();
+  }
+
+  /**
    * Retrieves the value of a {@link Long} property.
    *
    * @param node The {@link JsonNode} containing the property.
@@ -161,14 +191,9 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       final JsonParser parser)
       throws JsonMappingException {
 
-    final JsonNode prop = getProperty(node, property, parser);
-
-    if (!prop.isLong()) {
-      throw new JsonMappingException(parser,
-          String.format(MSG_TMPL_LONG_INVALID, property));
-    }
-
-    return prop.asLong();
+    final Long prop = getLongOrNull(node, property, parser);
+    throwIfNull(prop, property, parser);
+    return prop;
   }
 
   /**
