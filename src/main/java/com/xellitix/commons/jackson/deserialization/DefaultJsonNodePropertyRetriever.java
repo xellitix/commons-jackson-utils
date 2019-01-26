@@ -44,6 +44,36 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
   }
 
   /**
+   * Retrieves the value of a {@link String} property if it exists.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link String} value or null if the property does not exist.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public String getStringOrNull(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getPropertyOrNull(node, property);
+
+    if (prop == null) {
+      return null;
+    }
+
+    if (!prop.isTextual()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_STRING_INVALID, property));
+    }
+
+    return prop.asText();
+  }
+
+  /**
    * Retrieves the value of a {@link String} property.
    *
    * @param node The {@link JsonNode} containing the property.
@@ -59,14 +89,9 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       final JsonParser parser)
       throws JsonMappingException {
 
-    final JsonNode prop = getProperty(node, property, parser);
-
-    if (!prop.isTextual()) {
-      throw new JsonMappingException(parser,
-          String.format(MSG_TMPL_STRING_INVALID, property));
-    }
-
-    return prop.asText();
+    final String value = getStringOrNull(node, property, parser);
+    throwIfNull(value, property, parser);
+    return value;
   }
 
   /**
@@ -185,12 +210,19 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       throws JsonMappingException {
 
     final JsonNode prop = getPropertyOrNull(node, property);
+    throwIfNull(prop, property, parser);
+    return prop;
+  }
 
-    if (prop == null) {
+  private void throwIfNull(
+      final Object obj,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    if (obj == null) {
       throw new JsonMappingException(parser,
           String.format(MSG_TMPL_PROP_MISSING, property));
     }
-
-    return prop;
   }
 }
