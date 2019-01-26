@@ -61,6 +61,15 @@ public interface JsonNodePropertyRetriever {
    *
    * @param node The root object {@link JsonNode}.
    * @param property The property name.
+   * @return The property {@link JsonNode} or null if the property does not exist.
+   */
+  JsonNode getPropertyOrNull(JsonNode node, String property);
+
+  /**
+   * Gets a property {@link JsonNode}.
+   *
+   * @param node The root object {@link JsonNode}.
+   * @param property The property name.
    * @param parser The {@link JsonParser}.
    * @return The property {@link JsonNode}.
    * @throws JsonMappingException If the property is not defined.

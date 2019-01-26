@@ -161,6 +161,18 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
    *
    * @param node The root object {@link JsonNode}.
    * @param property The property name.
+   * @return The property {@link JsonNode} or null if the property does not exist.
+   */
+  @Override
+  public JsonNode getPropertyOrNull(final JsonNode node, final String property) {
+    return node.get(property);
+  }
+
+  /**
+   * Gets a property {@link JsonNode}.
+   *
+   * @param node The root object {@link JsonNode}.
+   * @param property The property name.
    * @param parser The {@link JsonParser}.
    * @return The property {@link JsonNode}.
    * @throws JsonMappingException If the property is not defined.
@@ -172,7 +184,7 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       final JsonParser parser)
       throws JsonMappingException {
 
-    final JsonNode prop = node.get(property);
+    final JsonNode prop = getPropertyOrNull(node, property);
 
     if (prop == null) {
       throw new JsonMappingException(parser,
