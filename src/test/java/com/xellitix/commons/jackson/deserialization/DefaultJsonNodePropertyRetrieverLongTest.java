@@ -31,6 +31,7 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  // #getLong
   @Test
   public void getLongReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
     // Prepare the test
@@ -48,7 +49,7 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
   }
 
   @Test
-  public void getIntThrowsException__WhenPropertyDoesNotExist__Test() throws Exception {
+  public void getLongThrowsException__WhenPropertyDoesNotExist__Test() throws Exception {
     // Describe the exception to expect
     thrown.expect(JsonMappingException.class);
     thrown.expectMessage(EX_MSG_PROP_NULL);
@@ -75,5 +76,50 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
 
     // Attempt to get the property value
     propertyRetriever.getLong(root, PROPERTY, parser);
+  }
+
+  // #getLongOrNull
+  @Test
+  public void getLongOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asLong();
+    doReturn(true)
+        .when(prop)
+        .isLong();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLongOrNull(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getLongOrNullReturnsNull__WhenPropertyDoesNotExist__Test() throws Exception {
+    // Prepare the test
+    doReturn(null)
+        .when(root)
+        .get(eq(PROPERTY));
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLongOrNull(root, PROPERTY, parser))
+        .isNull();
+  }
+
+  @Test
+  public void getLongOrNullThrowsException__WhenPropertyIsNotLong__Test() throws Exception {
+    // Describe the exception to expect
+    thrown.expect(JsonMappingException.class);
+    thrown.expectMessage(EX_MSG_PROP_INVALID);
+
+    // Prepare the test
+    doReturn(false)
+        .when(prop)
+        .isLong();
+
+    // Attempt to get the property value
+    propertyRetriever.getLongOrNull(root, PROPERTY, parser);
   }
 }
