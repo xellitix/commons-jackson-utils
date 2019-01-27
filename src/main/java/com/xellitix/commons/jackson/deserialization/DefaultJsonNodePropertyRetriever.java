@@ -265,7 +265,19 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
    */
   @Override
   public JsonNode getPropertyOrNull(final JsonNode node, final String property) {
-    return node.get(property);
+    final JsonNode prop = node.get(property);
+
+    // The property is not defined
+    if (prop == null) {
+      return null;
+    }
+
+    // The property is defined, but its value is null
+    if (prop.isNull()) {
+      return null;
+    }
+
+    return prop;
   }
 
   /**
