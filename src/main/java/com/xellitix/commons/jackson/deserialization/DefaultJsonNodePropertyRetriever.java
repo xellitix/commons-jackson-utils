@@ -167,7 +167,7 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       return null;
     }
 
-    if (!prop.isLong()) {
+    if (!(prop.isLong() || prop.isInt() || prop.isShort())) {
       throw new JsonMappingException(parser,
           String.format(MSG_TMPL_LONG_INVALID, property));
     }

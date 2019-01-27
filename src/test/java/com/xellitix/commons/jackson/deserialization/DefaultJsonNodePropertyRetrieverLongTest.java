@@ -33,7 +33,7 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
 
   // #getLong
   @Test
-  public void getLongReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+  public void getLongReturnsTheValue__WhenPropertyIsLong__Test() throws Exception {
     // Prepare the test
     doReturn(VALUE)
         .when(prop)
@@ -41,6 +41,38 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
     doReturn(true)
         .when(prop)
         .isLong();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLong(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getLongReturnsTheValue__WhenPropertyIsInt__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asLong();
+    doReturn(true)
+        .when(prop)
+        .isInt();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLong(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getLongReturnsTheValue__WhenPropertyIsShort__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asLong();
+    doReturn(true)
+        .when(prop)
+        .isShort();
 
     // Attempt to get the property value
     assertThat(propertyRetriever
@@ -80,7 +112,7 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
 
   // #getLongOrNull
   @Test
-  public void getLongOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+  public void getLongOrNullReturnsTheValue__WhenPropertyIsLong__Test() throws Exception {
     // Prepare the test
     doReturn(VALUE)
         .when(prop)
@@ -88,6 +120,38 @@ public class DefaultJsonNodePropertyRetrieverLongTest extends AbstractJsonNodePr
     doReturn(true)
         .when(prop)
         .isLong();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLongOrNull(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getLongOrNullReturnsTheValue__WhenPropertyIsInt__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asLong();
+    doReturn(true)
+        .when(prop)
+        .isInt();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getLongOrNull(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getLongOrNullReturnsTheValue__WhenPropertyIsShort__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asLong();
+    doReturn(true)
+        .when(prop)
+        .isShort();
 
     // Attempt to get the property value
     assertThat(propertyRetriever
