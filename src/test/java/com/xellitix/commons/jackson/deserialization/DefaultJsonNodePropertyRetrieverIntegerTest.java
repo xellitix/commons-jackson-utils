@@ -33,7 +33,7 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
 
   // #getInt
   @Test
-  public void getIntReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+  public void getIntReturnsTheValue__WhenPropertyIsInt__Test() throws Exception {
     // Prepare the test
     doReturn(VALUE)
         .when(prop)
@@ -41,6 +41,22 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
     doReturn(true)
         .when(prop)
         .isInt();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getInt(root, PROPERTY, parser))
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getIntReturnsTheValue__WhenPropertyIsShort__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asInt();
+    doReturn(true)
+        .when(prop)
+        .isShort();
 
     // Attempt to get the property value
     assertThat(propertyRetriever
@@ -80,7 +96,7 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
 
   // #getIntOrNull
   @Test
-  public void getIntOrNullReturnsTheValue__WhenPropertyIsValid__Test() throws Exception {
+  public void getIntOrNullReturnsTheValue__WhenPropertyIsInt__Test() throws Exception {
     // Prepare the test
     doReturn(VALUE)
         .when(prop)
@@ -93,6 +109,22 @@ public class DefaultJsonNodePropertyRetrieverIntegerTest extends AbstractJsonNod
     assertThat(propertyRetriever
         .getIntOrNull(root, PROPERTY, parser))
         .isNotNull()
+        .isEqualTo(VALUE);
+  }
+
+  @Test
+  public void getIntOrNullReturnsTheValue__WhenPropertyIsShort__Test() throws Exception {
+    // Prepare the test
+    doReturn(VALUE)
+        .when(prop)
+        .asInt();
+    doReturn(true)
+        .when(prop)
+        .isShort();
+
+    // Attempt to get the property value
+    assertThat(propertyRetriever
+        .getIntOrNull(root, PROPERTY, parser))
         .isEqualTo(VALUE);
   }
 
