@@ -17,9 +17,9 @@
     <description>Jackson ObjectMapper Utils</description>
 
     <scm>
-        <connection>scm:git:git://github.com/xellitix/commons-jersey-client-utils.git</connection>
-        <developerConnection>scm:git:ssh://github.com:xellitix/commons-jersey-client-utils.git</developerConnection>
-        <url>https://github.com/xellitix/commons-jersey-client-utils</url>
+        <connection>scm:git:git://github.com/xellitix/commons-jackson-utils.git</connection>
+        <developerConnection>scm:git:ssh://github.com:xellitix/commons-jackson-utils.git</developerConnection>
+        <url>https://github.com/xellitix/commons-jackson-utils</url>
     </scm>
 
     <dependencyManagement>
