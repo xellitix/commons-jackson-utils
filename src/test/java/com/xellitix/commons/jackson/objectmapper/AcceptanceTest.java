@@ -1,14 +1,19 @@
 package com.xellitix.commons.jackson.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.xellitix.commons.jackson.JacksonUtilsModule;
 import com.xellitix.commons.jackson.objectmapper.test.org.Organization;
 import com.xellitix.commons.jackson.objectmapper.test.org.OrganizationModule;
 import com.xellitix.commons.jackson.objectmapper.test.person.Person;
 import com.xellitix.commons.jackson.objectmapper.test.person.PersonModule;
+import com.xellitix.commons.net.compat.java.JavaNetCompatibilityModule;
+import java.net.URL;
 import java.util.List;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,20 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AcceptanceTest {
 
   // Constants
-  private static final String ORG_JSON =
-      "{" +
-      "  \"name\": \"Taco Club\"," +
-      "  \"members\": [" +
-      "    {" +
-      "      \"name\": \"Bob\"," +
-      "      \"age\": 20" +
-      "    }," +
-      "    {" +
-      "      \"name\": \"Sally\"," +
-      "      \"age\": 32" +
-      "    }" +
-      "  ]" +
-      "}";
+  private static String ORG_JSON;
   private static final String ORG_NAME = "Taco Club";
 
   private static final String MEMBER1_NAME = "Bob";
@@ -85,10 +77,17 @@ public class AcceptanceTest {
         .isEqualTo(MEMBER2_AGE);
   }
 
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    final URL jsonFileUrl = Resources.getResource("com/xellitix/commons/jackson/objectmapper/test/org.json");
+    ORG_JSON = Resources.toString(jsonFileUrl, Charsets.UTF_8);
+  }
+
   @Before
   public void setUp() {
     mapper = Guice
         .createInjector(
+            new JavaNetCompatibilityModule(),
             new JacksonUtilsModule(),
             new PersonModule(),
             new OrganizationModule())

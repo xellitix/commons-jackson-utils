@@ -15,8 +15,6 @@ public class JsonDeserializationUtilsModule extends PrivateModule {
    */
   @Override
   protected void configure() {
-    install(new UriModule());
-
     bind(JsonNodePropertyRetriever.class).to(DefaultJsonNodePropertyRetriever.class);
     expose(JsonNodePropertyRetriever.class);
   }
