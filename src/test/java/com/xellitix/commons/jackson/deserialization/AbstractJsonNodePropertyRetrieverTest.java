@@ -3,6 +3,7 @@ package com.xellitix.commons.jackson.deserialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xellitix.commons.net.compat.java.uri.UriFactory;
+import com.xellitix.commons.net.compat.java.url.UrlFactory;
 import org.junit.Before;
 
 import static org.mockito.Matchers.eq;
@@ -28,6 +29,7 @@ public class AbstractJsonNodePropertyRetrieverTest {
   protected JsonParser parser;
 
   protected UriFactory uriFactory;
+  protected UrlFactory urlFactory;
   protected JsonNodePropertyRetriever propertyRetriever;
 
   @Before
@@ -45,7 +47,10 @@ public class AbstractJsonNodePropertyRetrieverTest {
     // Mock the URI factory
     uriFactory = mock(UriFactory.class);
 
+    // Mock the URL factory
+    urlFactory = mock(UrlFactory.class);
+
     // Create the test subject
-    propertyRetriever = new DefaultJsonNodePropertyRetriever(uriFactory);
+    propertyRetriever = new DefaultJsonNodePropertyRetriever(uriFactory, urlFactory);
   }
 }

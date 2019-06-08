@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.xellitix.commons.net.compat.java.uri.UriFactory;
+import com.xellitix.commons.net.compat.java.url.UrlFactory;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Default {@link JsonNodePropertyRetriever} implementation.
@@ -29,18 +32,26 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       "Expected property \"%s\" to be a long";
   private static final String MSG_TMPL_URI_INVALID =
       "Expected property \"%s\" to be a valid URI";
+  private static final String MSG_TMPL_URL_INVALID =
+      "Expected property \"%s\" to be a valid URL";
 
   // Dependencies
   private final UriFactory uriFactory;
+  private final UrlFactory urlFactory;
 
   /**
    * Constructor.
    *
    * @param uriFactory The {@link UriFactory}.
+   * @param urlFactory The {@link UrlFactory}.
    */
   @Inject
-  DefaultJsonNodePropertyRetriever(final UriFactory uriFactory) {
+  DefaultJsonNodePropertyRetriever(
+      final UriFactory uriFactory,
+      final UrlFactory urlFactory) {
+
     this.uriFactory = uriFactory;
+    this.urlFactory = urlFactory;
   }
 
   /**
@@ -252,6 +263,66 @@ public class DefaultJsonNodePropertyRetriever implements JsonNodePropertyRetriev
       throws JsonMappingException {
 
     final URI prop = getUriOrNull(node, property, parser);
+    throwIfNull(prop, property, parser);
+    return prop;
+  }
+
+  /**
+   * Retrieves the value of a {@link URL} property if it exists.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URL} value or null if the property does not exist.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public URL getUrlOrNull(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final JsonNode prop = getPropertyOrNull(node, property);
+
+    if (prop == null) {
+      return null;
+    }
+
+    if (!prop.isTextual()) {
+      throw new JsonMappingException(parser,
+          String.format(MSG_TMPL_URL_INVALID, property));
+    }
+
+    final String url = prop.asText();
+
+    try {
+      return urlFactory.create(url);
+    } catch (MalformedURLException ex) {
+      throw new JsonMappingException(
+          parser,
+          String.format(MSG_TMPL_URL_INVALID, property),
+          ex);
+    }
+  }
+
+  /**
+   * Retrieves the value of a {@link URL} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URL} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  @Override
+  public URL getUrl(
+      final JsonNode node,
+      final String property,
+      final JsonParser parser)
+      throws JsonMappingException {
+
+    final URL prop = getUrlOrNull(node, property, parser);
     throwIfNull(prop, property, parser);
     return prop;
   }

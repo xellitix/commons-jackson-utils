@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
+import java.net.URL;
 
 /**
  * {@link JsonNode} property retriever.
@@ -99,6 +100,28 @@ public interface JsonNodePropertyRetriever {
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
   URI getUri(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+
+  /**
+   * Retrieves the value of a {@link URL} property if it exists.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URL} value or null if the property does not exist.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  URL getUrlOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+
+  /**
+   * Retrieves the value of a {@link URL} property.
+   *
+   * @param node The {@link JsonNode} containing the property.
+   * @param property The property name.
+   * @param parser The {@link JsonParser}.
+   * @return The {@link URL} value.
+   * @throws JsonMappingException If an error occurs while retrieving the property value.
+   */
+  URL getUrl(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
 
   /**
    * Gets a property {@link JsonNode} if it exists.
