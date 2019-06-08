@@ -22,7 +22,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link String} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  String getStringOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  String getStringOrNull(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link String} property.
@@ -33,7 +37,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link String} value.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  String getString(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  String getString(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of an {@link Integer} property if it exists.
@@ -44,7 +52,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link Integer} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  Integer getIntOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  Integer getIntOrNull(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of an {@link Integer} property.
@@ -55,7 +67,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link Integer} value.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  int getInt(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  int getInt(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link Long} property if it exists.
@@ -66,7 +82,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link Long} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  Long getLongOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  Long getLongOrNull(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link Long} property.
@@ -77,7 +97,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link Long} value.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  long getLong(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  long getLong(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link URI} property if it exists.
@@ -88,7 +112,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link URI} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  URI getUriOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  URI getUriOrNull(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link URI} property.
@@ -99,7 +127,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link URI} value.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  URI getUri(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  URI getUri(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link URL} property if it exists.
@@ -110,7 +142,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link URL} value or null if the property does not exist.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  URL getUrlOrNull(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  URL getUrlOrNull(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Retrieves the value of a {@link URL} property.
@@ -121,7 +157,11 @@ public interface JsonNodePropertyRetriever {
    * @return The {@link URL} value.
    * @throws JsonMappingException If an error occurs while retrieving the property value.
    */
-  URL getUrl(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  URL getUrl(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 
   /**
    * Gets a property {@link JsonNode} if it exists.
@@ -130,7 +170,9 @@ public interface JsonNodePropertyRetriever {
    * @param property The property name.
    * @return The property {@link JsonNode} or null if the property does not exist.
    */
-  JsonNode getPropertyOrNull(JsonNode node, String property);
+  JsonNode getPropertyOrNull(
+      JsonNode node,
+      String property);
 
   /**
    * Gets a property {@link JsonNode}.
@@ -141,5 +183,9 @@ public interface JsonNodePropertyRetriever {
    * @return The property {@link JsonNode}.
    * @throws JsonMappingException If the property is not defined.
    */
-  JsonNode getProperty(JsonNode node, String property, JsonParser parser) throws JsonMappingException;
+  JsonNode getProperty(
+      JsonNode node,
+      String property,
+      JsonParser parser)
+      throws JsonMappingException;
 }
