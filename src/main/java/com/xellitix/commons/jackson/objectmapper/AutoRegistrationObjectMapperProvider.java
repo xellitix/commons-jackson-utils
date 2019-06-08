@@ -15,6 +15,9 @@ import java.util.Set;
 @Singleton
 public class AutoRegistrationObjectMapperProvider implements ObjectMapperProvider {
 
+  // Properties
+  private ObjectMapper mapper;
+
   // Dependencies
   private final Set<JsonDeserializer> deserializers;
 
@@ -35,6 +38,15 @@ public class AutoRegistrationObjectMapperProvider implements ObjectMapperProvide
    */
   @Override
   public ObjectMapper get() {
+    // ObjectMapper lazy initialization
+    if (mapper == null) {
+      mapper = create();
+    }
+
+    return mapper;
+  }
+
+  private ObjectMapper create() {
     final ObjectMapper mapper = new ObjectMapper();
     final SimpleModule module = new SimpleModule();
 
